@@ -15,9 +15,11 @@ import 'package:spa_booking/Screens/Search/search_screen.dart';
 import 'package:spa_booking/Screens/SpaDetail/components/review_box.dart';
 import 'package:spa_booking/controller/spa.dart';
 import 'package:spa_booking/models/service.dart';
+import 'package:spa_booking/models/services.dart';
 import 'package:spa_booking/models/spa.dart';
 import 'package:spa_booking/utils/constants.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 final SpaController _spaController = Get.find<SpaController>();
 
@@ -26,12 +28,12 @@ class SpaDetailScreen extends StatefulWidget {
   String? lastPage = "";
   Spa? spa;
   Service2? selectedService = null;
-  List<Service2> cart = [];
+  List<Service> cart = [];
 
   List<Service2> listMassage = [];
   List<Service2> listFacial = [];
   List<Service2> listSauna = [];
-  SpaDetailScreen(){}
+  SpaDetailScreen() {}
   // SpaDetailScreen(
   //     {this.lastPage,
   //     this.searchKey,
@@ -166,24 +168,11 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
                       ],
                     ),
                     Row(children: [
-                      // for (int i = 1; i <= widget.spa!.rate!.round(); i++)
-                      //   Image.asset(
-                      //     StrConstants.iconPath + "starColor.png",
-                      //     width: 25,
-                      //   ),
-                      // for (int i = 1; i <= 5 - widget.spa.rate.round(); i++)
-                      //   Image.asset(
-                      //     StrConstants.iconPath + "starNoColor.png",
-                      //     width: 25,
-                      //   ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text(
-                          // "${widget.spa.totalRate} reviews",
-                          "reviews",
-                          style: TextStyle(color: Colors.grey),
+                      for (int i = 1; i <= 5; i++)
+                        Image.asset(
+                          StrConstants.iconPath + "starColor.png",
+                          width: 25,
                         ),
-                      )
                     ]),
                     SizedBox(
                       height: 10,
@@ -453,7 +442,7 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
         SizedBox(
           height: 15,
         ),
-        // getServiceDetail()
+        getServiceDetail()
       ],
     );
   }
@@ -575,16 +564,8 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
-                              if (service.sale > 0)
-                                Text(
-                                  "\$${service.price}",
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: ColorConstants.mainColorBold,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
                               Text(
-                                "\$${service.price * (100 - service.sale) / 100}",
+                                "${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(service.price)}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red,
@@ -647,7 +628,7 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
           return dialog;
         },
       ).then((value) {
-        Service2 x = value as Service2;
+        Service x = value as Service;
         if (x != null)
           setState(() {
             widget.cart.add(value);
@@ -656,46 +637,47 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
     }
   }
 
-  // Column getServiceDetail() {
-  // if (selectedCate == "Massage") {
-  //   List<Service> list = [];
-  //   list.addAll(widget.spa.getByCate("Massage"));
-  //   return Column(
-  //     children: [
-  //       for (int i = 0; i < list.length; i++)
-  //         getServiceBox(list[i], "massage.png"),
-  //     ],
-  //   );
-  // } else if (selectedCate == "Facial") {
-  //   List<Service> list = [];
-  //   list.addAll(widget.spa.getByCate("Facial"));
-  //   return Column(
-  //     children: [
-  //       for (int i = 0; i < list.length; i++)
-  //         getServiceBox(list[i], "facial1.png"),
-  //     ],
-  //   );
-  // } else if (selectedCate == "Sauna") {
-  //   List<Service> list = [];
-  //   list.addAll(widget.spa.getByCate("Sauna"));
-  //   return Column(
-  //     children: [
-  //       for (int i = 0; i < list.length; i++)
-  //         getServiceBox(list[i], "sauna.png"),
-  //     ],
-  //   );
-  // } else if (selectedCate == "Hot stone therapy") {
-  //   List<Service> list = [];
-  //   list.addAll(widget.spa.getByCate("Hot stone therapy"));
-  //   return Column(
-  //     children: [
-  //       for (int i = 0; i < list.length; i++)
-  //         getServiceBox(list[i], "hotStoneTherapy.png"),
-  //     ],
-  //   );
-  // } else
-  //   return Column();
-  // }
+  Column getServiceDetail() {
+    if (selectedCate == "Massage") {
+      List<Service> list = [];
+      list.addAll(_spaController.spaDetail[0].services!);
+      return Column(
+        children: [
+          for (int i = 0; i < list.length; i++)
+            getServiceBox(list[i], "massage.png"),
+        ],
+      );
+      // }
+      // else if (selectedCate == "Facial") {
+      //   List<Service> list = [];
+      //   list.addAll(widget.spa.getByCate("Facial"));
+      //   return Column(
+      //     children: [
+      //       for (int i = 0; i < list.length; i++)
+      //         getServiceBox(list[i], "facial1.png"),
+      //     ],
+      //   );
+      // } else if (selectedCate == "Sauna") {
+      //   List<Service> list = [];
+      //   list.addAll(widget.spa.getByCate("Sauna"));
+      //   return Column(
+      //     children: [
+      //       for (int i = 0; i < list.length; i++)
+      //         getServiceBox(list[i], "sauna.png"),
+      //     ],
+      //   );
+      // } else if (selectedCate == "Hot stone therapy") {
+      //   List<Service> list = [];
+      //   list.addAll(widget.spa.getByCate("Hot stone therapy"));
+      //   return Column(
+      //     children: [
+      //       for (int i = 0; i < list.length; i++)
+      //         getServiceBox(list[i], "hotStoneTherapy.png"),
+      //     ],
+      //   );
+    } else
+      return Column();
+  }
 
   Widget getBottomNavbar(BuildContext context) {
     if (widget.cart.isEmpty) {
@@ -721,9 +703,7 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
         onTap: () {
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {
-              return BookingAppointmentScreen1(
-                cart: widget.cart,
-              );
+              return BookingAppointmentScreen1(cart: widget.cart, spa: _spaController.spaDetail);
             },
           ));
         },
@@ -774,15 +754,12 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
   }
 
   Widget getServiceBox(
-    Service2 service,
+    Service service,
     String image,
   ) {
     Size size = MediaQuery.of(context).size;
 
-    String description = service.name +
-        " " +
-        service.cateType +
-        " is your beauty care service. Make you feel comfortable, relieve stress after work.";
+    String description = service.name!;
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: GestureDetector(
@@ -801,32 +778,12 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (service.sale > 0)
-                        Stack(
-                          children: [
-                            Image.asset(
-                              StrConstants.imgPath + image,
-                              width: size.width * 0.27,
-                              height: size.width * 0.3 / 4 * 3,
-                              fit: BoxFit.fill,
-                            ),
-                            Text(
-                              "Sale ${service.sale}%",
-                              style: TextStyle(
-                                  backgroundColor: Colors.red[100],
-                                  color: Colors.red,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        )
-                      else
-                        Image.asset(
-                          StrConstants.imgPath + image,
-                          width: size.width * 0.27,
-                          height: size.width * 0.3 / 4 * 3,
-                          fit: BoxFit.fill,
-                        ),
+                      Image.network(
+                        '${service.urlImage}',
+                        width: size.width * 0.27,
+                        height: size.width * 0.3 / 4 * 3,
+                        fit: BoxFit.fill,
+                      ),
                       SizedBox(
                         width: 5,
                       ),
@@ -836,13 +793,19 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              service.name + " " + service.cateType,
+                              service.name!,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: ColorConstants.mainColorBold),
                             ),
                             Text(
-                              description,
+                              "Time: ${service.duration} minute",
+                              style: TextStyle(fontSize: 12),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 4,
+                            ),
+                            Text(
+                              service.description!,
                               style: TextStyle(fontSize: 12),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 4,
@@ -878,16 +841,8 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                if (service.sale > 0)
-                                  Text(
-                                    "\$${service.price}",
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color: ColorConstants.mainColorBold,
-                                        decoration: TextDecoration.lineThrough),
-                                  ),
                                 Text(
-                                  "\$${service.price * (100 - service.sale) / 100}",
+                                  "${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(service.price)}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.red,
@@ -908,10 +863,10 @@ class _SpaDetailScreen extends State<SpaDetailScreen> {
     );
   }
 
-  Widget getButtonChoose(Service2 service) {
+  Widget getButtonChoose(Service service) {
     bool inCart = false;
     Size size = MediaQuery.of(context).size;
-    for (Service2 x in widget.cart) if (x == service) inCart = true;
+    for (Service x in widget.cart) if (x == service) inCart = true;
     if (!inCart) {
       return Padding(
         padding: EdgeInsets.only(top: size.width * 0.3 / 4 * 3 + 30 - 10),

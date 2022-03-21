@@ -10,9 +10,12 @@ import 'package:spa_booking/utils/constants.dart';
 
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../../../models/spa.dart';
+
 class Body extends StatefulWidget {
-  List<Service2> cart;
-  Body({required this.cart});
+  List<Service> cart;
+  Spa spa;
+  Body({required this.cart, required this.spa});
 
   @override
   State<StatefulWidget> createState() {
@@ -180,7 +183,7 @@ class _Body extends State<Body> {
           //===================================BOTTOM
           Component.getActionStepButton(context, false, () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return BookingDetailScreen(cart: widget.cart, date: selectedDate.toString().split(" ")[0], time: selectedTime);
+              return BookingDetailScreen(cart: widget.cart, date: selectedDate.toString().split(" ")[0], time: selectedTime, spa: widget.spa );
             },));
           })
         ],

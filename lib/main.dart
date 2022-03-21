@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spa_booking/Screens/BookingAppointment/bookingDetail/booking_detail_screen.dart';
 import 'package:spa_booking/Screens/Home/home_screen.dart';
 import 'package:spa_booking/Screens/Login/login_screen.dart';
 import 'package:spa_booking/Screens/SpaDetail/servies_detail_screen.dart';
@@ -51,7 +52,7 @@ void main() async {
           page: () => ServicesDetailScreen(),
           binding: Binding(),
         ),
-         GetPage(
+        GetPage(
           name: '/spa_detail_screen.dart',
           page: () => SpaDetailScreen(),
           binding: Binding(),

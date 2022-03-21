@@ -716,13 +716,13 @@ class _ServicesDetailScreen extends State<ServicesDetailScreen> {
     } else {
       return GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return BookingAppointmentScreen1(
-                cart: widget.cart,
-              );
-            },
-          ));
+          // Navigator.push(context, MaterialPageRoute(
+          //   builder: (context) {
+          //     return BookingAppointmentScreen1(
+          //       cart: widget.cart,
+          //     );
+          //   },
+          // ));
         },
         child: Container(
             height: 50,

@@ -3,11 +3,14 @@ import 'package:spa_booking/Components/app_bar.dart';
 import 'package:spa_booking/Screens/BookingAppointment/bookingDetail/components/body.dart';
 import 'package:spa_booking/models/service.dart';
 
+import '../../../models/spa.dart';
+
 class BookingDetailScreen extends StatelessWidget {
-  List<Service2> cart;
+  List<Service> cart;
   String date;
   String time;
-  BookingDetailScreen({required this.cart,required this.date, required this.time});
+  Spa spa;
+  BookingDetailScreen({required this.cart,required this.date, required this.time, required this.spa});
   @override
   Widget build(BuildContext context) {
     String title = "Booking Detail";
@@ -22,7 +25,7 @@ class BookingDetailScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 0),
-        child: BodyBookingDetail(cart:cart, date: date,time: time,),
+        child: BodyBookingDetail(cart:cart, date: date,time: time, spa: spa),
       ),
     );
   }

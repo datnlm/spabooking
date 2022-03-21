@@ -8,13 +8,19 @@ import 'package:flutter/widgets.dart';
 import 'package:spa_booking/models/service.dart';
 import 'package:spa_booking/utils/constants.dart';
 
+import '../../../../models/spa.dart';
+
 class BodyBookingDetail extends StatefulWidget {
-  List<Service2> cart;
+  List<Service> cart;
   String date;
   String time;
+  Spa spa;
 
   BodyBookingDetail(
-      {required this.cart, required this.date, required this.time});
+      {required this.cart,
+      required this.date,
+      required this.time,
+      required this.spa});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,16 +30,16 @@ class BodyBookingDetail extends StatefulWidget {
 
 class _BodyBookingDetail extends State<BodyBookingDetail> {
   String x = "";
-  double total=0;
-  int num=7;
+  double total = 0;
+  int num = 7;
 
   @override
   Widget build(BuildContext context) {
     //Size
     Size size = MediaQuery.of(context).size;
     //calculate total
-    for(Service2 service in widget.cart){
-      total += (service.price - service.price * service.sale/100);
+    for (Service service in widget.cart) {
+      total += (service.price!);
     }
     //calculate PM or AM
     if (int.parse(widget.time.split(":")[0]) < 12 &&
@@ -42,9 +48,8 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
     else
       x = "PM";
     //calculate num
-    if(widget.cart.length <= num)
-      for(Service2 service in widget.cart)
-        num-=1;
+    if (widget.cart.length <= num)
+      for (Service service in widget.cart) num -= 1;
     return Padding(
       padding: EdgeInsets.only(top: 10, left: 12, right: 12),
       child: SingleChildScrollView(
@@ -53,11 +58,11 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
           children: [
             Center(
               child: Text(
-                'widget.cart[0].spa.name',
+                "${widget.spa.spaName}",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
             ),
             SizedBox(
@@ -69,7 +74,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                 Container(
                   width: (size.width - 24) * 0.7,
                   child: Text(
-                    'widget.cart[0].spa.address',
+                    "Phone: ${widget.spa.phone}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -114,28 +119,24 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for(Service2 service in widget.cart)
-                  createService(service),
+                for (Service service in widget.cart) createService(service),
               ],
             ),
-            for(int i=0; i<num;i++)
+            for (int i = 0; i < num; i++)
               SizedBox(
                 height: 30,
               ),
             Center(
               child: Container(
-                width: (size.width-24)*0.8,
+                width: (size.width - 24) * 0.8,
                 decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: Colors.black45,
-                      width: 2
-                    )
-                  )
-                ),
+                    border: Border(
+                        top: BorderSide(color: Colors.black45, width: 2))),
               ),
             ),
-            SizedBox(height: 25,),
+            SizedBox(
+              height: 25,
+            ),
             Center(
               child: Text(
                 "Total Price",
@@ -145,38 +146,36 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Center(
               child: Text(
                 "\$$total",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: ColorConstants.textColorBold
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: ColorConstants.textColorBold),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
                   child: Container(
                     width: size.width * 0.4,
-
                     child: RaisedButton(
-                      onPressed: (){},
+                      onPressed: () {},
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                      ),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       color: ColorConstants.textColorBold,
                       child: Text(
                         "Finish",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white
-                        ),
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -199,7 +198,6 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                 //     ),
                 //   ),
                 // ),
-
               ],
             )
           ],
@@ -208,7 +206,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
     );
   }
 
-  Widget createService(Service2 service) {
+  Widget createService(Service service) {
     return Container(
         decoration: BoxDecoration(
             border: Border(
@@ -221,13 +219,13 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                service.name,
+                service.name!,
                 style: TextStyle(
                     fontSize: 14,
                     color: ColorConstants.mainColorBold,
                     fontWeight: FontWeight.bold),
               ),
-              if (service.sale <= 0)
+              if (0 <= 0)
                 Text(
                   "\$${service.price}",
                   style: TextStyle(fontSize: 14, color: Colors.red),
@@ -248,7 +246,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                       width: 5,
                     ),
                     Text(
-                      "\$${service.price * service.sale / 100}",
+                      "\$${service.price}",
                       style: TextStyle(fontSize: 14, color: Colors.red),
                     ),
                   ],
