@@ -19,6 +19,7 @@ import 'package:spa_booking/models/service.dart';
 import 'package:spa_booking/models/spa.dart';
 import 'package:spa_booking/utils/constants.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 final ServicesController _servicesController = Get.find<ServicesController>();
 
@@ -32,15 +33,16 @@ class ServicesDetailScreen extends StatefulWidget {
   List<Service2> listMassage = [];
   List<Service2> listFacial = [];
   List<Service2> listSauna = [];
-  ServicesDetailScreen(
-      {this.lastPage,
-      this.searchKey,
-      this.spa,
-      Service2? service,
-      List<Service2>? cartForward}) {
-    if (service != null) selectedService = service;
-    if (cartForward != null) cart = cartForward;
-  }
+  ServicesDetailScreen() {}
+  // ServicesDetailScreen(
+  //     {this.lastPage,
+  //     this.searchKey,
+  //     this.spa,
+  //     Service2? service,
+  //     List<Service2>? cartForward}) {
+  //   if (service != null) selectedService = service;
+  //   if (cartForward != null) cart = cartForward;
+  // }
   @override
   State<StatefulWidget> createState() {
     return _ServicesDetailScreen();
@@ -48,7 +50,7 @@ class ServicesDetailScreen extends StatefulWidget {
 }
 
 class _ServicesDetailScreen extends State<ServicesDetailScreen> {
-  String? selected = "Services";
+  String? selected = "Reviews";
   String? selectedCate = "Massage";
   bool? cartIsNull = true;
   @override
@@ -69,32 +71,12 @@ class _ServicesDetailScreen extends State<ServicesDetailScreen> {
       cartIsNull = false;
     }
     Size size = MediaQuery.of(context).size;
-    return GetBuilder<ServicesController>(
-      builder: (controller) => Scaffold(
-          appBar: TopBar.getAppBarSpaDetail(size, context, title, () {
-            if (widget.lastPage == "home")
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return MainScreen();
-                },
-              ));
-            else if (widget.lastPage == "search")
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return SearchScreen(searchKey: widget.searchKey!);
-                },
-              ));
-            else if (widget.lastPage == "appointment")
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return AppointmentScreen(
-                    finished: false,
-                  );
-                },
-              ));
-          }, widget.cart, widget.lastPage!, widget.searchKey!),
-          body: getBody(size),
-          bottomNavigationBar: getBottomNavbar(context)),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Services Detail'),
+        backgroundColor: Colors.red[200],
+      ),
+      body: getBody(size),
     );
   }
 
@@ -163,11 +145,11 @@ class _ServicesDetailScreen extends State<ServicesDetailScreen> {
                       ],
                     ),
                     Row(children: [
-                      // for (int i = 1; i <= widget.spa!.rate!.round(); i++)
-                      //   Image.asset(
-                      //     StrConstants.iconPath + "starColor.png",
-                      //     width: 25,
-                      //   ),
+                      for (int i = 1; i <= 5; i++)
+                        Image.asset(
+                          StrConstants.iconPath + "starColor.png",
+                          width: 25,
+                        ),
                       // for (int i = 1; i <= 5 - widget.spa.rate.round(); i++)
                       //   Image.asset(
                       //     StrConstants.iconPath + "starNoColor.png",
@@ -177,7 +159,7 @@ class _ServicesDetailScreen extends State<ServicesDetailScreen> {
                         padding: EdgeInsets.only(left: 15),
                         child: Text(
                           // "${widget.spa.totalRate} reviews",
-                          "reviews",
+                          "143 reviews",
                           style: TextStyle(color: Colors.grey),
                         ),
                       )
@@ -186,7 +168,27 @@ class _ServicesDetailScreen extends State<ServicesDetailScreen> {
                       height: 10,
                     ),
                     Text(
-                      "${controller.servicesDetail[0].price}",
+                      "Price: ${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(controller.servicesDetail[0].price)}",
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Ducaration: ${controller.servicesDetail[0].duration} minutes",
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Description: ${controller.servicesDetail[0].description}",
                       style: TextStyle(
                           color: Colors.black54,
                           fontStyle: FontStyle.italic,
@@ -198,16 +200,6 @@ class _ServicesDetailScreen extends State<ServicesDetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        PickFuntionButton(
-                          text: "Services",
-                          selected: selected!,
-                          func: () {
-                            setState(() {
-                              selected = "Services";
-                            });
-                          },
-                          sizeButton: size.width * 0.25,
-                        ),
                         PickFuntionButton(
                           text: "Reviews",
                           selected: selected!,
