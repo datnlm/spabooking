@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:spa_booking/controller/services.dart';
 import 'package:spa_booking/models/service.dart';
 import 'package:spa_booking/utils/constants.dart';
 
 import '../../../../models/spa.dart';
+import 'package:get/get.dart';
 
 class BodyBookingDetail extends StatefulWidget {
   List<Service> cart;
@@ -29,6 +31,7 @@ class BodyBookingDetail extends StatefulWidget {
 }
 
 class _BodyBookingDetail extends State<BodyBookingDetail> {
+  final ServicesController _servicesController = Get.find<ServicesController>();
   String x = "";
   double total = 0;
   int num = 7;
@@ -166,7 +169,8 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                   child: Container(
                     width: size.width * 0.4,
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: () => _servicesController.bookServices(
+                          widget.spa, widget.cart, widget.time, widget.date),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       color: ColorConstants.textColorBold,
