@@ -11,6 +11,7 @@ import 'package:spa_booking/utils/constants.dart';
 
 import '../../../../models/spa.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BodyBookingDetail extends StatefulWidget {
   List<Service> cart;
@@ -38,6 +39,11 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
 
   @override
   Widget build(BuildContext context) {
+    String datetime = widget.date + ' ' + widget.time;
+    DateTime timestart = DateFormat("yyyy-MM-dd hh:mm").parse(datetime);
+    DateTime tmpDate = DateFormat("yyyy-MM-dd").parse(widget.date);
+    String timeend = DateFormat.Hm()
+        .format(timestart.add(Duration(minutes: widget.cart[0].duration!)));
     //Size
     Size size = MediaQuery.of(context).size;
     //calculate total
@@ -96,14 +102,28 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
               height: 15,
             ),
             Text(
-              "Date: ${widget.date}",
+              "Date: ${DateFormat("EEE, MMM d, yyyy").format(tmpDate)}",
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(
               height: 5,
             ),
             Text(
-              "Time: ${widget.time} $x",
+              "Duration: ${widget.cart[0].duration} minutes",
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "Time start: ${widget.time} $x",
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "Time end: ${timeend} $x",
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(
@@ -154,7 +174,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
             ),
             Center(
               child: Text(
-                "\$$total",
+                "${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(total)}",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -231,7 +251,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
               ),
               if (0 <= 0)
                 Text(
-                  "\$${service.price}",
+                  "${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(service.price)}",
                   style: TextStyle(fontSize: 14, color: Colors.red),
                 )
               else
@@ -239,7 +259,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "\$${service.price}",
+                      "${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(service.price)}",
                       style: TextStyle(
                         fontSize: 12,
                         color: ColorConstants.priceBeforeSaleColor,
@@ -250,7 +270,7 @@ class _BodyBookingDetail extends State<BodyBookingDetail> {
                       width: 5,
                     ),
                     Text(
-                      "\$${service.price}",
+                      "${NumberFormat.currency(locale: "vi-VN", symbol: "VND").format(service.price)}",
                       style: TextStyle(fontSize: 14, color: Colors.red),
                     ),
                   ],
